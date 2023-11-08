@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.0.2-dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script type="text/javascript" src="{% static 'plugins/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'plugins/bootstrap-5.0.2-dist/js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <title>首页</title>
+</head>
+<body>
+<div class="header">
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img src="{% static 'imgs/logo1.png' %}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ current_city }}
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                {% for city in city_list %}
+                                    <li><a class="dropdown-item" href="/index/?current_city={{ city }}">{{ city }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="#">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link">房源列表</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">添加房源</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="title-wrap">
+            <p>连接每个家的故事</p>
+            <p><span>{{ current_city }}</span>当前共有房源<span class="house_count">{{ house_count }}</span>个</p>
+        </div>
+        <div class="search-wrap">
+            <div class="search-box" style="font-size: 0">
+                <form action="">
+                    {% csrf_token %}
+                    <input id="search-input" class="search-input" name="search-input" type="search"
+                           placeholder="请输入区域、户型或小区名称开始找房">
+                    <button class="search-btn" type="submit">开始找房</button>
+                </form>
+            </div>
+            <div class="search-suggest" id="suggest_list">
+                <ul id="suggest_wrap"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="wrapper">
+        <div class="title">
+            <p>精品房源&nbsp;<span>为你而选</span></p>
+            <p>好房源那么多，我们为你精选，链家网会越来越懂你</p>
+        </div>
+        <div class="content_wrap">
+            {% for s in suggest_list %}
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ s.img_src }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ s.title}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ s.district_id }}</h6>
+                        <p class="card-text">房屋设施：{{ s.facilities }}</p>
+                        <p href="#" class="card-link">￥{{ s.price}}</p>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
