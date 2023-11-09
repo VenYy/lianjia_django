@@ -1,0 +1,95 @@
+{% load static %}
+<!doctype html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.0.2-dist/css/bootstrap.css' %}">
+    <script type="text/javascript" src="{% static 'plugins/bootstrap-5.0.2-dist/js/bootstrap.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/house_list.css' %}">
+{#    <script type="text/javascript" src="{% static 'js/house_list.js' %}"></script>#}
+    <title>房源列表</title>
+</head>
+<body>
+<div class="header">
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img src="{% static 'imgs/logo1.png' %}" alt=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="/index">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/house/list">房源列表</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">添加房源</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="content">
+    <div class="wrapper">
+        <div class="page_list">
+            {% if page_obj %}
+                <ul>
+                    {% for article in page_obj %}
+                        <li> {{ article.title }}</li>
+                    {% endfor %}
+                </ul>
+
+                {# 分页链接 #}
+                {% if is_paginated %}
+                    <nav aria-label="">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link"
+                                                                href="?page={{ page_obj.previous_page_number }}">上一页</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">上一页</span></li>
+                            {% endif %}
+
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if i %}
+                                    {% if page_obj.number == i %}
+                                        {#当前页面#}
+                                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% else %}
+                                    <span style="margin: 0 10px">...</span>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">下一页</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+
+            {% else %}
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

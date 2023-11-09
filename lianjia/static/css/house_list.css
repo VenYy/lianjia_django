@@ -1,0 +1,277 @@
+ul, li {
+    list-style: none;
+}
+
+li {
+    display: inline
+}
+
+a {
+    text-decoration: none;
+    color: #101d37;
+}
+
+
+.header {
+    background: #212529;
+}
+
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-item a {
+    color: white!important;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+
+.filter {
+    /*width: 1080px;*/
+    /*margin: 0 auto;*/
+    background: #f5f5f6;
+    padding-bottom: 20px;
+    /*border-bottom: 1px solid #ccc;*/
+}
+
+.filter_wrap {
+    width: 1080px;
+    margin: 0 auto;
+}
+
+.search_filter {
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+.search_filter .search_wrap {
+    /*display: inline-block;*/
+    display: flex;
+    align-items: center;
+    width: 710px;
+    line-height: 48px;
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .1);
+}
+
+.search_wrap input {
+    width: 650px;
+    padding: 16px 23px 17px;
+    box-sizing: border-box;
+    border-width: 0;
+    font-size: 14px;
+    outline: none;
+    border-radius: 5px;
+}
+
+.search_wrap button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background: url("/static/image/search.png") no-repeat;
+    background-size: contain;
+}
+
+
+.filer_ul {
+    position: relative;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.by_city .strong {
+    font-size: 14px;
+}
+
+.by_district .strong {
+    font-size: 13px;
+}
+
+.strong a {
+    color: #52ae66;
+    font-weight: 600;
+}
+
+
+.filer_ul li {
+    margin-right: 15px;
+    font-size: 13px;
+}
+
+.filter_type {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+.house_list {
+    margin-top: 20px;
+}
+
+.house_list .list_title {
+    width: 1080px;
+    margin: 0 auto 15px;
+    font-size: 16px;
+    font-family: "Microsoft JhengHei UI", sans-serif;
+    color: #101d37;
+    font-weight: 600;
+}
+
+.list_title span {
+    padding: 0 5px;
+    color: #68b374;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.list_title a {
+    padding-left: 30px;
+    text-decoration: underline;
+    color: #9399a5;
+    cursor: pointer;
+    font-family: sans-serif;
+}
+
+
+.house_info {
+    position: relative;
+    width: 1080px;
+    height: 200px;
+    margin: 0 auto 20px;
+}
+
+.cover {
+    position: absolute;
+    width: 300px;
+    left: 0;
+    top: 15px;
+}
+
+.cover img {
+    max-width: 100%;
+    border-radius: 8px;
+    /*max-height: 100%;*/
+}
+
+.general_info {
+    position: absolute;
+    width: 740px;
+    left: 340px;
+    top: 15px;
+}
+
+.general_info a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.general_info a:hover {
+    color: #52ae66;
+}
+
+.general_info p {
+    margin-bottom: 13px;
+}
+
+.general_info i {
+    font-weight: 400;
+    color: #ccc;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.general_info .info_title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #101d37;
+}
+
+.general_info .info_des {
+    font-size: 15px;
+    font-weight: 600;
+    color: #6d6d73;
+}
+
+.general_info .info_facility {
+    font-size: 14px;
+}
+
+.info_facility span {
+    padding: 3px 8px;
+    color: #a19aae;
+    background: #f2f5f7;
+    margin-right: 10px;
+}
+
+.general_info .info_floor {
+    color: #6d6d73;
+}
+
+
+.general_info .info_price {
+    color: #fa5741;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.info_price .price {
+    font-size: 24px;
+    font-family: "Tahoma", sans-serif
+}
+
+
+/*翻页插件效果*/
+.pagination {
+    width: 1080px;
+    margin: 0 auto;
+    padding: 50px 0;
+    /*text-align: center;*/
+}
+
+.pagination a {
+    padding: 0 10px;
+    text-decoration: none;
+    color: #555555;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    /*border: 1px solid #ccc;*/
+}
+
+.pagination .current-page-number {
+    background-color: #394043;
+    color: white;
+}
+
+.pagination a:hover:not(.current-page-number) {
+    color: #52ae66;
+}
+
+#back_to_top {
+    position: fixed;
+    width: 120px;
+    height: 35px;
+    color: #333333;
+    right: 300px;
+    bottom: 30px;
+    display: flex;
+    text-align: center;
+    line-height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+#back_to_top img {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+}
