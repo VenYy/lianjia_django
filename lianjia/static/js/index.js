@@ -1,6 +1,6 @@
 function search_suggest(keyword) {
     $.ajax({
-        url: "/search/suggest",
+        url: "/search/suggest/",
         type: "POST",
         data: {
             "search-input": keyword
@@ -12,7 +12,7 @@ function search_suggest(keyword) {
             if (data.status === 1) {
                 const house_list = data.data
                 for (let i = 0; i < house_list.length; i++) {
-                    text += `<li class="suggest_item">
+                    text += `<li class="suggest_item" title="${house_list[i].title}">
                                 <span class="item_title">${house_list[i].title}</span>
                                 <span class="item_addr">${house_list[i].city_id}&nbsp;${house_list[i].district_id}</span>
                                 <span class="item_price">￥${house_list[i].price}</span>
@@ -23,10 +23,20 @@ function search_suggest(keyword) {
                 }
                 $("#suggest_list").display = "block"
                 suggest_wrap.innerHTML = text
+                click_to_input()
             }
         }
     })
 }
+
+// 点击搜索候选区将其填入输入框
+function click_to_input() {
+    $(".suggest_item").on("click", function () {
+        $("#search-input").val("")
+        $("#search-input").val($(this).attr("title"))
+    })
+}
+
 
 
 $(document).ready(function () {
