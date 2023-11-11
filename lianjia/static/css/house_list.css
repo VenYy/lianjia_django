@@ -1,0 +1,119 @@
+ul, li {
+    list-style: none;
+}
+
+li {
+    display: inline
+}
+
+a {
+    text-decoration: none;
+    color: #101d37;
+}
+
+
+.header {
+    background: #212529;
+}
+
+.wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-item a {
+    color: white!important;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+
+.house_info {
+    position: relative;
+    height: 200px;
+    margin: 0 auto 20px;
+}
+.cover {
+    position: absolute;
+    width: 300px;
+    left: 0;
+    top: 15px;
+}
+
+.cover img {
+    max-width: 100%;
+    border-radius: 8px;
+    height: 200px;
+}
+
+.general_info {
+    position: absolute;
+    width: 740px;
+    left: 340px;
+    top: 15px;
+}
+
+.general_info a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.general_info a:hover {
+    color: #52ae66;
+}
+
+.general_info p {
+    margin-bottom: 13px;
+}
+
+.general_info i {
+    font-weight: 400;
+    color: #ccc;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.general_info .info_title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #101d37;
+}
+
+.general_info .info_des {
+    font-size: 15px;
+    font-weight: 600;
+    color: #6d6d73;
+}
+
+.general_info .info_facility {
+    font-size: 14px;
+}
+
+.info_facility span {
+    padding: 3px 8px;
+    color: #a19aae;
+    background: #f2f5f7;
+    margin-right: 10px;
+}
+
+.general_info .info_floor {
+    color: #6d6d73;
+}
+
+
+.general_info .info_price {
+    color: #fa5741;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.info_price .price {
+    font-size: 24px;
+    font-family: "Tahoma", sans-serif
+}
+
+.content .wrapper > nav {
+    margin-top: 80px;
+}
