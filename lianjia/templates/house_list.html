@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.0.2-dist/css/bootstrap.css' %}">
     <script type="text/javascript" src="{% static 'plugins/bootstrap-5.0.2-dist/js/bootstrap.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/house_list.css' %}">
-    {#    <script type="text/javascript" src="{% static 'js/house_list.js' %}"></script>#}
+    <script type="text/javascript" src="{% static 'js/house_list.js' %}"></script>
     <title>房源列表</title>
 </head>
 
@@ -73,21 +73,24 @@
                 <ul class="filer_ul by_city">
                     <li class="filter_type">按区域</li>
                     <br>
-                    <li {% if request.GET.city == "" or not request.GET.city %}class="strong"{% endif %}><a
-                            href="/house/list?city=">不限</a></li>
+                    <li {% if not request.GET.city and not request.GET.district %}class="strong"{% endif %}>
+                        <a href="/house/list?{{ query_params|remove_city }}">不限</a>
+                    </li>
+
                     {% for city in city_list %}
                         <li {% if request.GET.city == city %}class="strong"{% endif %}><a
-                                href="/house/list?city={{ city }}">{{ city }}</a></li>
+                                href="/house/list?{{ query_params|remove_city }}&city={{ city }}">{{ city }}</a>
+                        </li>
                     {% endfor %}
 
                 </ul>
                 <ul class="filer_ul by_district">
                     {% if sub_districts|length > 0 %}
                         <li {% if request.GET.district == "" or not request.GET.district %}class="strong"{% endif %}><a
-                                href="/house/list?city={{ current_city }}&district=">不限</a></li>
+                                href="/house/list?{{ query_params|remove_param:'district' }}">不限</a></li>
                         {% for district in sub_districts %}
                             <li {% if request.GET.district == district %}class="strong"{% endif %}><a
-                                    href="/house/list?city={{ current_city }}&district={{ district }}">{{ district }}</a>
+                                    href="/house/list?{{ query_params|remove_param:'district' }}&district={{ district }}">{{ district }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
@@ -96,13 +99,44 @@
                     <li class="filter_type">按方式</li>
                     <br>
                     <li {% if not request.GET.rent_type %}class="strong"{% endif %}><a
-                            href="/house/list">不限</a></li>
+                            href="/house/list?{{ query_params|remove_param:'rent_type' }}">不限</a></li>
+                    {% for rent_type in rent_type_list %}
+                        <li {% if request.GET.rent_type == rent_type %}class="strong"{% endif %}><a
+                                {# 删除之前的rent_type参数, 然后添加新的rent_type参数 #}
+                                href="/house/list?{{ query_params|remove_param:'rent_type' }}&rent_type={{ rent_type }}">{{ rent_type }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <ul class="filer_ul by_rooms">
+                    <li class="filter_type">按户型</li>
+                    <br>
+                    <li {% if not request.GET.rooms %}class="strong"{% endif %}><a
+                            href="/house/list?{{ query_params|remove_param:'rooms' }}">不限</a></li>
+                    {% for rooms in rooms_list %}
+                        <li {% if request.GET.rooms == rooms %}class="strong"{% endif %}><a
+                                href="/house/list?{{ query_params|remove_param:'rooms' }}&rooms={{ rooms }}">{{ rooms }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <ul class="filer_ul by_direction">
+                    <li class="filter_type">按朝向</li>
+                    <br>
+                    <li {% if not request.GET.direction %}class="strong"{% endif %}><a
+                            href="/house/list?{{ query_params|remove_param:'direction' }}">不限</a></li>
+                    {% for direction in direction_list %}
+                        <li {% if request.GET.direction == direction %}class="strong"{% endif %}><a
+                                href="/house/list?{{ query_params|remove_param:'direction' }}&direction={{ direction }}">{{ direction }}</a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
     <div class="wrapper">
         <div class="houses">
+            <p class="list_title">当前共有<span>{{ all_count }}</span>套{{ args_city }}{{ args_district }}房源<a
+                    class="clear_filter" href="/house/list">清空条件</a>
+            </p>
             {% if data_list %}
                 {% for item in data_list %}
                     <div class="house_info">
@@ -158,6 +192,7 @@
         </ul>
     </div>
 </div>
+<div id="back_to_top" style="display: none"><img src="{% static 'imgs/to-top.png' %}" alt="">&nbsp;返回顶部</div>
 </body>
 
 </html>

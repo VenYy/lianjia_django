@@ -49,9 +49,11 @@ def search_suggest(request):
 # 房源列表
 def house_list(request):
     search_input = request.GET.get("param")
-    city = request.GET.get("city", "")
-    district = request.GET.get("district", "")
-    rent_type = request.GET.get("rent_type", "")
+    args_city = request.GET.get("city", "")
+    args_district = request.GET.get("district", "")
+    args_rent_type = request.GET.get("rent_type")
+    args_rooms = request.GET.get("rooms")
+    args_direction = request.GET.get("direction")
 
     # 如果想修改request.POST或request.GET的数据，应该先复制一份原始数据再进行修改，而不是直接修改原始数据。
     # 这是因为一旦直接修改了原始数据，那么后续的代码可能无法正确地处理这个请求。
@@ -59,22 +61,33 @@ def house_list(request):
     # 将其设置为可变
     query_params._mutable = True
 
+    # print(query_params)             # <QueryDict: {'city': ['嘉兴']}>
+    # print(query_params["city"])     # 嘉兴
+
+    # 出租类型["整租", "合租"]
+    rent_type_list = list(Houses.objects.values_list("rent_type", flat=True).distinct())
+
     # 城市列表
     city_list = list(City.objects.all().values_list("city_zh", flat=True))
 
     # 当前城市所对应的下级区县
     try:
-        sub_districts = list(District.objects.filter(city_en=City.objects.get(city_zh=city).city_en) \
+        sub_districts = list(District.objects.filter(city_en=City.objects.get(city_zh=args_city).city_en) \
                              .values_list("district_zh", flat=True))
     except:
         sub_districts = []
+
+    # 户型列表
+    rooms_list = ["1室", "2室", "3室", "4室", "5室"]
+
+    # 朝向列表
+    direction_list = ["东", "西", "南", "北", "南/北", "其他"]
 
     # houses = Houses.objects.all()
     query = Houses.objects
 
     # 输入框搜索
     if search_input:
-
         search_input = search_input.replace(" ", "")
         query = query.filter(
             Q(city__city_zh__contains=search_input) |
@@ -84,16 +97,26 @@ def house_list(request):
         )
 
     # 按城市名称筛选
-    if city:
-        query = query.filter(city__city_zh=city)
+    if args_city:
+        query = query.filter(city__city_zh=args_city)
 
     # 按区县名称筛选
-    if district:
-        query = query.filter(district__district_zh=district)
+    if args_district:
+        query = query.filter(district__district_zh=args_district)
 
     # 按出租类型筛选
-    if rent_type:
-        query = query.filter(rent_type=rent_type)
+    if args_rent_type:
+        query = query.filter(rent_type=args_rent_type)
+
+    # 按户型筛选
+    if args_rooms:
+        query = query.filter(rooms__contains=args_rooms)
+
+    if args_direction:
+        if args_direction == "其他":
+            query = query.exclude(direction__in=direction_list)
+        else:
+            query = query.filter(direction=args_direction)
 
     houses = query.all()
 
@@ -113,12 +136,17 @@ def house_list(request):
         'house_list.html',
         {
             'pager': pager,
+            "all_count": all_count,
+            "args_city": args_city,
+            "args_district": args_district,
             "data_list": data_list,
             "city_list": city_list,
             "sub_districts": sub_districts,
-            "current_city": city,
-            "district": district,
-            "rent_type": rent_type
+            "rent_type_list": rent_type_list,
+            "rooms_list": rooms_list,
+            "direction_list": direction_list,
+            "current_city": args_city,
+            "query_params": query_params
         }
     )
 

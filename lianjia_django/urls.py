@@ -24,4 +24,5 @@ urlpatterns = [
     path("search/suggest/", views.search_suggest),
     # path("search/result", views.search_result),
     path("house/list", views.house_list),
+
 ]

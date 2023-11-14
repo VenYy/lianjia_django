@@ -55,6 +55,7 @@ body {
     display: flex;
     align-items: center;
     width: 710px;
+    margin-bottom: 30px;
     /*line-height: 48px;*/
     font-size: 14px;
     border-radius: 5px;
@@ -113,6 +114,30 @@ body {
     font-weight: bold;
 }
 
+/*=======================*/
+
+.list_title {
+    margin: 30px auto 15px;
+    font-size: 16px;
+    font-family: "Microsoft JhengHei UI", sans-serif;
+    color: #101d37;
+    font-weight: 600;
+}
+
+.list_title span {
+    padding: 0 5px;
+    color: #68b374;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.list_title a {
+    padding-left: 30px;
+    text-decoration: underline;
+    color: #9399a5;
+    cursor: pointer;
+    font-family: sans-serif;
+}
 
 /*===============================*/
 .house_info {
@@ -189,11 +214,11 @@ body {
     color: #6d6d73;
 }
 
-
 .general_info .info_price {
     color: #fa5741;
     font-size: 14px;
     font-weight: bold;
+    font-family: "Microsoft JhengHei UI", sans-serif;
 }
 
 .info_price .price {
@@ -236,4 +261,29 @@ body {
 .footer li {
     margin-right: 20px;
     border-bottom: 1px rgba(204, 204, 204, 0.25) solid;
+}
+
+/*======================*/
+#back_to_top {
+    position: fixed;
+    width: 120px;
+    height: 35px;
+    color: #333333;
+    right: 300px;
+    bottom: 130px;
+    display: flex;
+    text-align: center;
+    line-height: 35px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: bottom;
+}
+
+#back_to_top img {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+
 }
