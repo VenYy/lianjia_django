@@ -59,6 +59,9 @@ def house_list(request):
     # 将其设置为可变
     query_params._mutable = True
 
+    # print(query_params)             # <QueryDict: {'city': ['嘉兴']}>
+    # print(query_params["city"])     # 嘉兴
+
     # 城市列表
     city_list = list(City.objects.all().values_list("city_zh", flat=True))
 
@@ -74,7 +77,6 @@ def house_list(request):
 
     # 输入框搜索
     if search_input:
-
         search_input = search_input.replace(" ", "")
         query = query.filter(
             Q(city__city_zh__contains=search_input) |
@@ -118,7 +120,8 @@ def house_list(request):
             "sub_districts": sub_districts,
             "current_city": city,
             "district": district,
-            "rent_type": rent_type
+            "rent_type": rent_type,
+            "query_params": query_params
         }
     )
 
