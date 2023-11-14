@@ -1,6 +1,8 @@
 {% load static %}
+{% load custom_filters %}
 <!doctype html>
 <html lang="zh_CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -9,9 +11,10 @@
     <link rel="stylesheet" href="{% static 'plugins/bootstrap-5.0.2-dist/css/bootstrap.css' %}">
     <script type="text/javascript" src="{% static 'plugins/bootstrap-5.0.2-dist/js/bootstrap.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/house_list.css' %}">
-{#    <script type="text/javascript" src="{% static 'js/house_list.js' %}"></script>#}
+        <script type="text/javascript" src="{% static 'js/house_list.js' %}"></script>
     <title>房源列表</title>
 </head>
+
 <body>
 <div class="header">
     <div class="wrapper">
@@ -41,55 +44,123 @@
     </div>
 </div>
 <div class="content">
-    <div class="wrapper">
-        <div class="page_list">
-            {% if page_obj %}
-                <ul>
-                    {% for article in page_obj %}
-                        <li> {{ article.title }}</li>
+    <div class="filter">
+        <div class="wrapper">
+            <div class="search_filter">
+                <div class="search_wrap">
+                    <input type="text" id="filter_by_input" placeholder="输入区域或小区名称开始找房">
+                    <button onclick="filter_content()"></button>
+                </div>
+                <script type="text/javascript">
+                    function filter_content() {
+                        // 用于处理用户输入的内容
+                        var base_url = "{{ request.base_url }}"
+                        var request_url = "/house/list"
+                        var user_input = document.getElementById("filter_by_input").value
+                        if (user_input) {
+                            request_url = base_url + "?param=" + encodeURIComponent(user_input) + "&"
+                        }
+                        // 发送请求
+                        fetch(request_url)
+                            .then(function (response) {
+                                return response.text()
+                            })
+                            .then(function () {
+                                window.location = request_url
+                            })
+                    }
+                </script>
+                <ul class="filer_ul by_city">
+                    <li class="filter_type">按区域</li>
+                    <br>
+                    <li {% if not request.GET.city and not request.GET.district %}class="strong"{% endif %}>
+                        <a href="/house/list?{{ query_params|remove_city }}">不限</a>
+                    </li>
+
+                    {% for city in city_list %}
+                        <li {% if request.GET.city == city %}class="strong"{% endif %}><a
+                                href="/house/list?{{ query_params|update_params:{'': ''} }}">{{ city }}</a></li>
                     {% endfor %}
+
                 </ul>
-
-                {# 分页链接 #}
-                {% if is_paginated %}
-                    <nav aria-label="">
-                        <ul class="pagination justify-content-center">
-                            {% if page_obj.has_previous %}
-                                <li class="page-item"><a class="page-link"
-                                                                href="?page={{ page_obj.previous_page_number }}">上一页</a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled"><span class="page-link">上一页</span></li>
-                            {% endif %}
-
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if i %}
-                                    {% if page_obj.number == i %}
-                                        {#当前页面#}
-                                        <li class="page-item active"><span class="page-link">{{ i }}</span></li>
-                                    {% else %}
-                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
-                                    {% endif %}
-                                {% else %}
-                                    <span style="margin: 0 10px">...</span>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if page_obj.has_next %}
-                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页</a>
-                                </li>
-                            {% else %}
-                                <li class="page-item disabled"><span class="page-link">下一页</span></li>
-                            {% endif %}
-                        </ul>
-                    </nav>
-                {% endif %}
-
-            {% else %}
-
-            {% endif %}
+                <ul class="filer_ul by_district">
+                    {% if sub_districts|length > 0 %}
+                        <li {% if request.GET.district == "" or not request.GET.district %}class="strong"{% endif %}><a
+                                href="/house/list?{{ query_params|remove_param:'district' }}">不限</a></li>
+                        {% for district in sub_districts %}
+                            <li {% if request.GET.district == district %}class="strong"{% endif %}><a
+                                    href="/house/list?city={{ current_city }}&district={{ district }}">{{ district }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <ul class="filer_ul by_rent_type">
+                    <li class="filter_type">按方式</li>
+                    <br>
+                    <li {% if not request.GET.rent_type %}class="strong"{% endif %}><a
+                            href="/house/list">不限</a></li>
+                </ul>
+            </div>
         </div>
     </div>
+    <div class="wrapper">
+        <div class="houses">
+            {% if data_list %}
+                {% for item in data_list %}
+                    <div class="house_info">
+                        <div class="cover"><img src="{{ item.img_src }}" alt=""></div>
+                        <div class="general_info">
+                            <p class="info_title"><a
+                                    href="https://{{ item.city_id|trans_city }}.lianjia.com/zufang/{{ item.id }}.html">{{ item.title }}</a>
+                            </p>
+                            <p class="info_des">
+                                <a href="">{{ item.city_id }}</a>
+                                -
+                                <a href="">{{ item.district_id }}</a>
+                                -
+                                <a href="">{{ item.village_name }}</a>
+                                <i>/</i>
+                                {{ item.area }}
+                                <i>/</i>
+                                {{ item.direction }}
+                                <i>/</i>
+                                {{ item.rooms }}
+                            </p>
+                            <p class="info_facility">
+                                {% for facility in item.facilities|deal_facility %}
+                                    <span>{{ facility }}</span>
+                                {% endfor %}
+                            </p>
+                            <p class="info_floor">
+                                {{ item.floor_type }}-{{ item.floor_num }}楼<i>/</i>{{ item.rent_type }}
+                            </p>
+                            <p class="info_price">
+                                <span class="price">{{ item.price }}</span>&nbsp;&nbsp;元/每月
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <nav>
+            <ul class="pagination">
+                {{ pager.page_html|safe }}
+            </ul>
+        </nav>
+    </div>
 </div>
+<div class="footer">
+    <div class="wrapper">
+        <ul>
+            <li>北京链家简介</li>
+            <li>联系我们</li>
+            <li>加入我们</li>
+            <li>隐私声明</li>
+            <li>网站地图</li>
+        </ul>
+    </div>
+</div>
+<div id="back_to_top" style="display: none"><img src="{% static 'imgs/to-top.png' %}" alt="">&nbsp;返回顶部</div>
 </body>
+
 </html>
