@@ -76,7 +76,7 @@ class Pagination(object):
         page_list = []
  
         if self.current_page <= 1:
-            prev = '<li class="page-item"><a class="page-link" href="#">上一页</a></li>'
+            prev = '<li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>'
         else:
             self.query_params['page'] = self.current_page - 1
             prev = '<li class="page-item"><a class="page-link" href="%s?%s">上一页</a></li>' % (self.base_url, self.query_params.urlencode())
@@ -91,7 +91,7 @@ class Pagination(object):
             page_list.append(tpl)
  
         if self.current_page >= self.pager_count:
-            nex = '<li class="page-item"><a class="page-link" href="#">下一页</a></li>'
+            nex = '<li class="page-item disabled"><a class="page-link" href="#">下一页</a></li>'
         else:
             self.query_params['page'] = self.current_page + 1
             nex = '<li class="page-item"><a class="page-link" href="%s?%s">下一页</a></li>' % (self.base_url, self.query_params.urlencode(),)

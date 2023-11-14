@@ -21,6 +21,7 @@ from lianjia import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("index/", views.index),
-    path("search/suggest/", views.search_result),
-    path("house/list", views.house_list)
+    path("search/suggest/", views.search_suggest),
+    path("search/result", views.search_result),
+    path("house/list", views.house_list),
 ]

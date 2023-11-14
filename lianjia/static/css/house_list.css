@@ -10,7 +10,14 @@ a {
     text-decoration: none;
     color: #101d37;
 }
-
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0;
+    padding-bottom: 100px;
+}
 
 .header {
     background: #212529;
@@ -27,13 +34,93 @@ a {
     font-size: 16px;
 }
 
+.nav-item a:hover {
+    color: #0dcaf0!important;
+}
 
 
+/*=================================*/
+.filter {
+    background: #f5f5f6;
+    padding-bottom: 10px;
+}
+
+.search_filter {
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+
+.search_filter .search_wrap {
+    /*display: inline-block;*/
+    display: flex;
+    align-items: center;
+    width: 710px;
+    /*line-height: 48px;*/
+    font-size: 14px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.18);
+}
+
+.search_wrap input {
+    width: 650px;
+    padding: 16px 23px 17px;
+    box-sizing: border-box;
+    border-width: 0;
+    font-size: 14px;
+    outline: none;
+    border-radius: 5px;
+}
+
+.search_wrap button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background: url("../imgs/search.png") no-repeat;
+    background-size: contain;
+}
+
+.filer_ul {
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    padding-left: 0;
+}
+
+
+.by_city .strong {
+    font-size: 14px;
+}
+
+.by_district .strong {
+    font-size: 13px;
+}
+
+.strong a {
+    color: #52ae66;
+    font-weight: 600;
+}
+
+
+.filer_ul li {
+    margin-right: 15px;
+    font-size: 13px;
+}
+
+.filter_type {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+/*===============================*/
 .house_info {
     position: relative;
     height: 200px;
     margin: 0 auto 20px;
 }
+
 .cover {
     position: absolute;
     width: 300px;
@@ -116,4 +203,37 @@ a {
 
 .content .wrapper > nav {
     margin-top: 80px;
+}
+
+
+/*==========================*/
+
+.pagination {
+    padding-bottom: 50px;
+}
+/*=========================*/
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    font-size: 12px;
+    background-color: #222222;
+}
+
+.footer ul, .footer li {
+    float: left;
+    color: #fff;
+    font-size: 14px;
+}
+
+.footer ul {
+    padding-left: 0;
+    margin-top: 35px;
+    margin-bottom: 0;
+}
+
+.footer li {
+    margin-right: 20px;
+    border-bottom: 1px rgba(204, 204, 204, 0.25) solid;
 }

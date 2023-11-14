@@ -44,6 +44,63 @@
     </div>
 </div>
 <div class="content">
+    <div class="filter">
+        <div class="wrapper">
+            <div class="search_filter">
+                <div class="search_wrap">
+                    <input type="text" id="filter_by_input" placeholder="输入区域或小区名称开始找房">
+                    <button onclick="filter_content()"></button>
+                </div>
+                <script type="text/javascript">
+                    function filter_content() {
+                        // 用于处理用户输入的内容
+                        var base_url = "{{ request.base_url }}"
+                        var request_url = "/house/list"
+                        var user_input = document.getElementById("filter_by_input").value
+                        if (user_input) {
+                            request_url = base_url + "?param=" + encodeURIComponent(user_input) + "&"
+                        }
+                        // 发送请求
+                        fetch(request_url)
+                            .then(function (response) {
+                                return response.text()
+                            })
+                            .then(function () {
+                                window.location = request_url
+                            })
+                    }
+                </script>
+                <ul class="filer_ul by_city">
+                    <li class="filter_type">按区域</li>
+                    <br>
+                    <li {% if request.GET.city == "" or not request.GET.city %}class="strong"{% endif %}><a
+                            href="/house/list?city=">不限</a></li>
+                    {% for city in city_list %}
+                        <li {% if request.GET.city == city %}class="strong"{% endif %}><a
+                                href="/house/list?city={{ city }}">{{ city }}</a></li>
+                    {% endfor %}
+
+                </ul>
+                <ul class="filer_ul by_district">
+                    {% if sub_districts|length > 0 %}
+                        <li {% if request.GET.district == "" or not request.GET.district %}class="strong"{% endif %}><a
+                                href="/house/list?city={{ current_city }}&district=">不限</a></li>
+                        {% for district in sub_districts %}
+                            <li {% if request.GET.district == district %}class="strong"{% endif %}><a
+                                    href="/house/list?city={{ current_city }}&district={{ district }}">{{ district }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <ul class="filer_ul by_rent_type">
+                    <li class="filter_type">按方式</li>
+                    <br>
+                    <li {% if not request.GET.rent_type %}class="strong"{% endif %}><a
+                            href="/house/list">不限</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="wrapper">
         <div class="houses">
             {% if data_list %}
@@ -52,7 +109,7 @@
                         <div class="cover"><img src="{{ item.img_src }}" alt=""></div>
                         <div class="general_info">
                             <p class="info_title"><a
-                                    href="https://{{ item.city_id }}.lianjia.com/zufang/{{ item.id_ }}.html">{{ item.title }}</a>
+                                    href="https://{{ item.city_id|trans_city }}.lianjia.com/zufang/{{ item.id }}.html">{{ item.title }}</a>
                             </p>
                             <p class="info_des">
                                 <a href="">{{ item.city_id }}</a>
@@ -88,6 +145,17 @@
                 {{ pager.page_html|safe }}
             </ul>
         </nav>
+    </div>
+</div>
+<div class="footer">
+    <div class="wrapper">
+        <ul>
+            <li>北京链家简介</li>
+            <li>联系我们</li>
+            <li>加入我们</li>
+            <li>隐私声明</li>
+            <li>网站地图</li>
+        </ul>
     </div>
 </div>
 </body>
