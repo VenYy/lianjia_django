@@ -58,8 +58,10 @@
                         var request_url = "/house/list"
                         var user_input = document.getElementById("filter_by_input").value
                         if (user_input) {
-                            request_url = base_url + "?param=" + encodeURIComponent(user_input) + "&"
+                            {#request_url = base_url + "?param=" + encodeURIComponent(user_input) + "&"#}
+                            request_url = "/house/list?{{ query_params|remove_param:'param' }}&param=" + user_input
                         }
+
                         // 发送请求
                         fetch(request_url)
                             .then(function (response) {
@@ -126,6 +128,17 @@
                     {% for direction in direction_list %}
                         <li {% if request.GET.direction == direction %}class="strong"{% endif %}><a
                                 href="/house/list?{{ query_params|remove_param:'direction' }}&direction={{ direction }}">{{ direction }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <ul class="filer_ul by_price">
+                    <li class="filter_type">按价格</li>
+                    <br>
+                    <li {% if not request.GET.price %}class="strong"{% endif %}><a
+                            href="/house/list?{{ query_params|remove_param:'price' }}">不限</a></li>
+                    {% for price in price_list %}
+                        <li {% if request.GET.price == price %}class="strong"{% endif %}><a
+                                href="/house/list?{{ query_params|remove_param:'price' }}&price={{ price }}">{{ price }}</a>
                         </li>
                     {% endfor %}
                 </ul>

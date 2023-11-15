@@ -54,6 +54,7 @@ def house_list(request):
     args_rent_type = request.GET.get("rent_type")
     args_rooms = request.GET.get("rooms")
     args_direction = request.GET.get("direction")
+    args_price = request.GET.get("price")
 
     # 如果想修改request.POST或request.GET的数据，应该先复制一份原始数据再进行修改，而不是直接修改原始数据。
     # 这是因为一旦直接修改了原始数据，那么后续的代码可能无法正确地处理这个请求。
@@ -66,24 +67,22 @@ def house_list(request):
 
     # 出租类型["整租", "合租"]
     rent_type_list = list(Houses.objects.values_list("rent_type", flat=True).distinct())
-
     # 城市列表
     city_list = list(City.objects.all().values_list("city_zh", flat=True))
-
     # 当前城市所对应的下级区县
     try:
         sub_districts = list(District.objects.filter(city_en=City.objects.get(city_zh=args_city).city_en) \
                              .values_list("district_zh", flat=True))
     except:
         sub_districts = []
-
     # 户型列表
     rooms_list = ["1室", "2室", "3室", "4室", "5室"]
-
     # 朝向列表
     direction_list = ["东", "西", "南", "北", "南/北", "其他"]
+    # 价格列表
+    price_list = ["0-1000元", "1000-2000元", "2000-3000元", "3000-4000元", "4000-5000元", "5000元以上"]
 
-    # houses = Houses.objects.all()
+    # 查询对象
     query = Houses.objects
 
     # 输入框搜索
@@ -112,11 +111,27 @@ def house_list(request):
     if args_rooms:
         query = query.filter(rooms__contains=args_rooms)
 
+    # 按朝向筛选
     if args_direction:
         if args_direction == "其他":
             query = query.exclude(direction__in=direction_list)
         else:
             query = query.filter(direction=args_direction)
+
+    # 按价格区间筛选
+    if args_price:
+        if args_price == "0-1000元":
+            query = query.filter(price__lte=1000)
+        elif args_price == "1000-2000元":
+            query = query.filter(price__gte=1000, price__lte=2000)
+        elif args_price == "2000-3000元":
+            query = query.filter(price__gte=2000, price__lte=3000)
+        elif args_price == "3000-4000元":
+            query = query.filter(price__gte=3000, price__lte=4000)
+        elif args_price == "4000-5000元":
+            query = query.filter(price__gte=4000, price__lte=5000)
+        elif args_price == "5000元以上":
+            query = query.filter(price__gte=5000)
 
     houses = query.all()
 
@@ -145,6 +160,7 @@ def house_list(request):
             "rent_type_list": rent_type_list,
             "rooms_list": rooms_list,
             "direction_list": direction_list,
+            "price_list": price_list,
             "current_city": args_city,
             "query_params": query_params
         }
