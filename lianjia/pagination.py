@@ -1,3 +1,5 @@
+from lianjia.templatetags.custom_filters import remove_param
+
 """
 分页组件
 """
@@ -105,8 +107,10 @@ class Pagination(object):
             self.query_params['page'] = self.current_page + 1
             nex = '<li class="page-item"><a class="page-link" href="%s?%s">下一页</a></li>' % (
                 self.base_url, self.query_params.urlencode(),)
+
         page_list.append(nex)
 
         # 拼接HTML页码字符串
         page_str = "".join(page_list)
+
         return page_str

@@ -234,7 +234,7 @@ body {
 /*==========================*/
 
 .pagination {
-    padding-bottom: 50px;
+    margin-bottom: 30px;
 }
 /*=========================*/
 .footer {
@@ -270,7 +270,7 @@ body {
     height: 35px;
     color: #333333;
     right: 300px;
-    bottom: 130px;
+    bottom: 120px;
     display: flex;
     text-align: center;
     line-height: 35px;
